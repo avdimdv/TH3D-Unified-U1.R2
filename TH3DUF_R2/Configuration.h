@@ -113,6 +113,7 @@
 //#define ANET_A8_PLUS
 //#define ANET_E10
 //#define ANET_E12
+//#define ANET_E16
 
 // If you are using our EZOut V2 (connects to LCD header) filament sensor kit please follow the install guide
 // and then uncomment the #define EZOUTV2_ENABLE line below.
@@ -154,6 +155,12 @@
 //#define TM3DAERO_EXTENDED
 //#define PETSFANG  //This is the RIGHT mounted version - if using the left mount please use the CUSTOM_PROBE option.
 //#define CUSTOM_PROBE
+
+// If you swapped the X, Y, or Z drivers with the TMC2208s you may need to reverse your axis. Uncomment the line for each axis that needs reversing.
+// Enabling these options will also set the driver delays/modes to the TMC2208_STANDALONE mode for whatever axis you uncomment it for.
+//#define ARTILLERY_AL4_X_AXIS_TMC2208
+//#define ARTILLERY_AL4_Y_AXIS_TMC2208
+//#define ARTILLERY_AL4_Z_AXIS_TMC2208
 
 //===========================================================================
 // *************************   CREALITY PRINTERS    *************************
@@ -395,7 +402,8 @@
 // Do NOT ever connect our filament sensor without the supplied adapter board.
 //#define EZOUT_ENABLE
 
-// EZABL Probe Mounts (Ender 5 uses the same mounts as CR-10)
+// EZABL Probe Mounts (Ender 5 can use most of the same mounts as CR-10)
+//#define ENDER5_OEM
 //#define CR10_OEM
 //#define CR10_VOLCANO
 //#define CR10_V6HEAVYDUTY
@@ -803,7 +811,7 @@
 // You can do down to 10mm on the Wanhao i3 since it cannot print on the entire bed.
 // You can do down to 5mm on the Wanhao i3 Mini since it cannot print on the entire bed.
 // (only used if EZABL enabled)
-#define EZABL_PROBE_EDGE 15
+#define EZABL_PROBE_EDGE 35
 
 // If you have issues with your machine running the faster probe setting disable the #define EZABL_FASTPROBE below.
 // DO NOTE: Most machines will work with the fast probe enabled. Use M48 to verify accuracy.
@@ -866,14 +874,13 @@
 // If you reversed the wiring on your E motor already (like the Bondtech Guide says to do) then you do not need to reverse it in the firmware here.
 
 // If you want to change the Esteps for your printer you can uncomment the below line and set CUSTOM_ESTEPS_VALUE to what you want - USE WHOLE NUMBERS ONLY
-// This option sets the esteps from the CUSTOM_ESTEPS_VALUE line below and does NOT reverse the E motor direction.
+// This option sets the esteps from the CUSTOM_ESTEPS_VALUE line below.
+// If you need to reverse the e motor direction also enabled the REVERSE_E_MOTOR_DIRECTION option.
+// Example EStep Values: TH3D Aluminum Extruder - 95 ESteps, TH3D Tough Extruder - 463 ESteps, BMG Extruder - 415 ESteps
+// When installing a Tough Extruder or E3D Titan or Bondtech that is Geared you likely need to enable the REVERSE_E_MOTOR_DIRECTION option
 //#define CUSTOM_ESTEPS
-#define CUSTOM_ESTEPS_VALUE 999
-
-// If you are using an TH3D Tough Extruder or E3D Titan Extruder uncomment the below line to setup the firmware to the correct steps and direction. Also applicable to Tough Direct or Titan Aero setups.
-// This option sets the esteps from the TITAN_EXTRUDER_STEPS line below and reverses the E motor direction.
-//#define TITAN_EXTRUDER
-#define TITAN_EXTRUDER_STEPS 463
+//#define REVERSE_E_MOTOR_DIRECTION
+#define CUSTOM_ESTEPS_VALUE 463
 
 // DUAL HOTEND SETTINGS ----------------------------
 
@@ -1024,6 +1031,6 @@
 #include "Configuration_beta.h"
 #include "Configuration_backend.h"
 
-#define UNIFIED_VERSION "TH3D U1.R2.18"
+#define UNIFIED_VERSION "TH3D U1.R2.20"
 
 #endif // CONFIGURATION_H
