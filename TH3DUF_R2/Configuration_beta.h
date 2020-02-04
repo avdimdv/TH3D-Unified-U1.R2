@@ -9,6 +9,15 @@
 #define CONFIGURATION_BETA_H
 #define CONFIGURATION_BETA_H_VERSION 010109
 
+//===========================================================================
+// *********************  Other Features for Testing  ***********************
+//===========================================================================
+// Disable Cold Extrusion Prevention
+//#define NO_COLD_PREVENT
+
+//===========================================================================
+// ****************************  BETA Machines  *****************************
+//===========================================================================
 
 //===========================================================================
 // ***********************   COPYMASTER PRINTERS    *************************
@@ -42,23 +51,5 @@
 // If you are using the stock BL Touch sensor uncomment the below line
 // If you are using a BL Touch but with a different mount uncomment the below line and the above CUSTOM_PROBE then enter the offsets below.
 //#define CR10_MAX_BLTOUCH
-
-
-//===========================================================================
-// Creality Ender 5 PLUS Options - Select 'Arduino Mega 2560' from Tools > Board
-//===========================================================================
-//#define ENDER5_PLUS
-
-// What LCD are you using? (Only 12864 LCD is supported)
-//#define RR_LCD_UPGRADE
-// Stock Touch LCD is not supported at this time.
-// Info on converting the LCD can be found here: COMING SOON
-
-// EZABL/ABL Probe Mounts
-//#define CUSTOM_PROBE
-
-// If you are using the stock BL Touch sensor uncomment the below line
-// If you are using a BL Touch but with a different mount uncomment the below line and the above CUSTOM_PROBE then enter the offsets below.
-//#define ENDER5_PLUS_BLTOUCH
 
 #endif // CONFIGURATION_H

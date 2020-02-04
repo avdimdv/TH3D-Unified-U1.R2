@@ -48,15 +48,6 @@
 #if ENABLED(CUSTOM_PROBE)
   #define EZABL_ENABLE
 #endif
-#if ENABLED(ENDER5_PLUS_BLTOUCH) && ENABLED(ENDER5_PLUS)
-  #define BLTOUCH
-  #define SERVO0_PIN 11
-  #if DISABLED(CUSTOM_PROBE)
-    #define X_PROBE_OFFSET_FROM_EXTRUDER -44
-    #define Y_PROBE_OFFSET_FROM_EXTRUDER -9
-  #endif
-  #define EZABL_ENABLE
-#endif
 #if ENABLED(CR10_MAX_BLTOUCH) && ENABLED(CR10_MAX)
   #define BLTOUCH
   #define SERVO0_PIN 11
@@ -223,6 +214,101 @@
   #define EZABL_ENABLE
 #endif
 
+#if ENABLED(ENDER5_PLUS)
+  #if DISABLED(ENDER5_PLUS_NOABL) && DISABLED(ENDER5_PLUS_EZABL)
+    #define BLTOUCH
+	#define SERVO0_PIN 11
+	#ifndef EZABL_PROBE_EDGE
+	  #define EZABL_PROBE_EDGE 35
+	#endif
+	#ifndef EZABL_POINTS
+	  #define EZABL_POINTS 5
+	#endif
+	#if DISABLED(CUSTOM_PROBE)
+      #define NOZZLE_TO_PROBE_OFFSET { -44, -9, 0}
+    #endif
+  #endif  
+  #if DISABLED(ENDER5_PLUS_NOABL)
+	  #define EZABL_ENABLE
+  #endif
+#endif
+
+//AnyCubic Mega Zero Settings
+#if ENABLED(AC_MEGA_ZERO)
+  #define SLIM_1284P
+  #define BAUDRATE 115200
+
+  #define AC_BED
+
+  #define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
+
+  #if ENABLED(EZOUT_ENABLE)
+    #define SPEAKER_KILL
+  #endif
+
+  #if ENABLED(LINEAR_ADVANCE)
+    #define SPEAKER_KILL
+  #endif
+    
+  #define X_MIN_ENDSTOP_INVERTING false
+  #define Y_MIN_ENDSTOP_INVERTING false
+  #define Z_MIN_ENDSTOP_INVERTING false
+  #define X_MAX_ENDSTOP_INVERTING false
+  #define Y_MAX_ENDSTOP_INVERTING false
+  #define Z_MAX_ENDSTOP_INVERTING false
+  #define Z_MIN_PROBE_ENDSTOP_INVERTING false
+
+  #if ENABLED(CUSTOM_ESTEPS)
+    #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, CUSTOM_ESTEPS_VALUE }
+  #else
+    #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 415 }
+  #endif
+  
+  #define DEFAULT_MAX_FEEDRATE          { 200, 200, 15, 50 }
+  #define DEFAULT_MAX_ACCELERATION      { 500, 800, 500, 5000 }
+
+  #define DEFAULT_ACCELERATION          500   
+  #define DEFAULT_RETRACT_ACCELERATION  500  
+  #define DEFAULT_TRAVEL_ACCELERATION   500   
+  
+  #define DEFAULT_XJERK                 7.0
+  #define DEFAULT_YJERK                 7.0
+  #define DEFAULT_ZJERK                  0.3
+  #define DEFAULT_EJERK                  5.0
+  
+  #define INVERT_X_DIR true
+  #define INVERT_Y_DIR true
+  #define INVERT_Z_DIR false
+  
+  #if ENABLED(REVERSE_E_MOTOR_DIRECTION)
+    #define INVERT_E0_DIR true
+  #else
+    #define INVERT_E0_DIR false
+  #endif
+    
+  #ifndef MOTHERBOARD
+    #define MOTHERBOARD BOARD_MELZI_CREALITY
+  #endif
+
+  #define X_BED_SIZE 225
+  #define Y_BED_SIZE 225
+  #define Z_MAX_POS 250
+
+  #if ENABLED(HOME_ADJUST)
+    #define X_MIN_POS X_HOME_ADJUST_LOCATION
+    #define Y_MIN_POS Y_HOME_ADJUST_LOCATION
+  #else
+    #define X_MIN_POS -7
+    #define Y_MIN_POS -3
+  #endif
+  
+  #define ENCODER_PULSES_PER_STEP 4
+  #define ENCODER_STEPS_PER_MENU_ITEM 1
+  
+  #define PRINTER_ENABLED_CHECK
+
+#endif
+
 //SOVOL SV01 Model Settings
 #if ENABLED(SOVOL_SV01)
   #define BAUDRATE 115200
@@ -259,7 +345,11 @@
   #define INVERT_Y_DIR false
   #define INVERT_Z_DIR true
 
-  #define INVERT_E0_DIR true
+  #if ENABLED(REVERSE_E_MOTOR_DIRECTION)
+    #define INVERT_E0_DIR false
+  #else
+    #define INVERT_E0_DIR true
+  #endif
   
   #ifndef MOTHERBOARD
     #define MOTHERBOARD BOARD_CR10S
@@ -363,6 +453,8 @@
     #define MOTHERBOARD BOARD_CR10S
   #endif
   
+  #define MOUNTED_FILAMENT_SENSOR
+  
   #define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
   
   #define BAUDRATE 115200
@@ -423,6 +515,8 @@
     #define MOTHERBOARD BOARD_CR10S
   #endif
   
+  #define MOUNTED_FILAMENT_SENSOR 
+  
   #if ENABLED(RR_LCD_UPGRADE)
     #define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
   #endif
@@ -438,9 +532,9 @@
   #define Z_MIN_PROBE_ENDSTOP_INVERTING false
   
   #if ENABLED(CUSTOM_ESTEPS)
-    #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, CUSTOM_ESTEPS_VALUE }
+    #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 800, CUSTOM_ESTEPS_VALUE }
   #else
-    #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 140 }
+    #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 800, 95 }
   #endif
   
   #define DEFAULT_MAX_FEEDRATE          { 300, 300, 15, 50 }
@@ -551,6 +645,8 @@
   #ifndef MOTHERBOARD
     #define MOTHERBOARD BOARD_CR10S
   #endif
+  
+  #define MOUNTED_FILAMENT_SENSOR
   
   #if ENABLED(RR_LCD_UPGRADE)
     #define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
@@ -956,7 +1052,12 @@
   #define INVERT_X_DIR false
   #define INVERT_Y_DIR true
   #define INVERT_Z_DIR true
-  #define INVERT_E0_DIR true
+  
+  #if ENABLED(REVERSE_E_MOTOR_DIRECTION)
+    #define INVERT_E0_DIR false
+  #else
+    #define INVERT_E0_DIR true
+  #endif
   
   #ifndef MOTHERBOARD
     #define MOTHERBOARD BOARD_MKS_BASE
@@ -1474,7 +1575,7 @@
   #define INVERT_Z_DIR true
   
   #if ENABLED(REVERSE_E_MOTOR_DIRECTION)
-    #define INVERT_E0_DIR true
+    #define INVERT_E0_DIR false
   #else
     #define INVERT_E0_DIR true
   #endif
@@ -1574,10 +1675,18 @@
     #define SINGLENOZZLE
   #endif
   
-  #if ENABLED(REVERSE_E_MOTOR_DIRECTION) || ENABLED(GEEETECH_A20M) || ENABLED(GEEETECH_A10M)
-    #define INVERT_E0_DIR false
-  #else
-    #define INVERT_E0_DIR true
+  #if ENABLED(GEEETECH_A20M) || ENABLED(GEEETECH_A10M)
+    #if ENABLED(REVERSE_E_MOTOR_DIRECTION)
+	  #define INVERT_E0_DIR true
+    #else
+      #define INVERT_E0_DIR false
+    #endif
+  #else  
+    #if ENABLED(REVERSE_E_MOTOR_DIRECTION)
+      #define INVERT_E0_DIR false
+    #else
+      #define INVERT_E0_DIR true
+    #endif
   #endif
   
   #if ENABLED(HOME_ADJUST)
@@ -2176,7 +2285,7 @@
   #if ENABLED(CR20)
     #define X_BED_SIZE 220
     #define Y_BED_SIZE 220
-    #define Z_MAX_POS 320
+    #define Z_MAX_POS 250
   #endif
   
   //dual extrusion options
@@ -2326,7 +2435,12 @@
   #define INVERT_X_DIR false
   #define INVERT_Y_DIR false
   #define INVERT_Z_DIR true
-  #define INVERT_E0_DIR true
+  
+  #if ENABLED(REVERSE_E_MOTOR_DIRECTION)
+    #define INVERT_E0_DIR false
+  #else
+    #define INVERT_E0_DIR true
+  #endif
   
   #ifndef MOTHERBOARD
     #define MOTHERBOARD BOARD_MKS_BASE
@@ -2389,7 +2503,12 @@
   #define INVERT_X_DIR false
   #define INVERT_Y_DIR true
   #define INVERT_Z_DIR false
-  #define INVERT_E0_DIR true
+  
+  #if ENABLED(REVERSE_E_MOTOR_DIRECTION)
+    #define INVERT_E0_DIR false
+  #else
+    #define INVERT_E0_DIR true
+  #endif
   
   #ifndef MOTHERBOARD
     #define MOTHERBOARD BOARD_RAMBO
@@ -2895,7 +3014,12 @@
 #define HEATER_4_MINTEMP 5
 #define BED_MINTEMP 5
 
-#define HEATER_0_MAXTEMP 290
+#if ENABLED(HIGH_TEMP_THERMISTOR)
+  #define HEATER_0_MAXTEMP HIGH_TEMP_THERMISTOR_TEMP
+#else
+  #define HEATER_0_MAXTEMP 290
+#endif
+
 #define HEATER_1_MAXTEMP 290
 #define HEATER_2_MAXTEMP 290
 #define HEATER_3_MAXTEMP 290
@@ -3017,14 +3141,15 @@
   #define HOMING_FEEDRATE_XY (40*60)
 #endif
 
-#if DISABLED(EZABL_FASTPROBE)
+#if ENABLED(BLTOUCH)
+  #define HOMING_FEEDRATE_Z  (4*60)
+#elif DISABLED(EZABL_FASTPROBE)
   #define HOMING_FEEDRATE_Z  (4*60)
 #else
   #define HOMING_FEEDRATE_Z  (8*60)
 #endif
   
 #if ENABLED(EZABL_ENABLE)
-  #define RESTORE_LEVELING_AFTER_G28
   #if DISABLED(BLTOUCH)
     #define FIX_MOUNTED_PROBE
   #endif
@@ -3180,7 +3305,6 @@
 #endif
 
 #if ENABLED(MANUAL_MESH_LEVELING) && DISABLED(EZABL_ENABLE)
-  #define RESTORE_LEVELING_AFTER_G28
   #define PROBE_MANUALLY
   #define LCD_BED_LEVELING
   #define MESH_BED_LEVELING

@@ -10,7 +10,7 @@
 * 
 * EZABL SETUP NOTES: 
 * If you have EZABL uncomment the mount you are using with the printer. 
-* If you have a custom/unsupported mount uncomment #define CUSTOM_MOUNT and enter your offsets 
+* If you have a custom/unsupported mount uncomment #define CUSTOM_PROBE and enter your offsets 
 * below in the CUSTOM MOUNT section. Refer to the EZABL guide to get your offsets.
 * 
 * STEP 1:
@@ -161,6 +161,21 @@
 //#define ARTILLERY_AL4_X_AXIS_TMC2208
 //#define ARTILLERY_AL4_Y_AXIS_TMC2208
 //#define ARTILLERY_AL4_Z_AXIS_TMC2208
+
+//===========================================================================
+// ***********************     ANYCUBIC PRINTERS     ************************
+//===========================================================================
+
+//===========================================================================
+// Mega Zero Options - Select 'Sanguino 1284p' from Tools > Board
+//===========================================================================
+//#define AC_MEGA_ZERO
+
+// If you are using our EZOut Pin 29?
+//#define EZOUT_ENABLE
+
+// EZABL Probe Mounts
+//#define CUSTOM_PROBE
 
 //===========================================================================
 // *************************   CREALITY PRINTERS    *************************
@@ -416,7 +431,10 @@
 #define TMC_CREALITY_BOARD
 
 // Use Ender Bootscreeen instead of TH3D
-#define ENDER_BOOT
+//#define ENDER_BOOT
+
+// If you have the new Ender 5 or Ender 5 Pro Model that has the new 800steps/mm Z leadscrew uncomment the below option to set the correct steps/mm
+//#define ENDER5_NEW_LEADSCREW
 //=================================================================================================
 // README - THE BELOW SETTINGS ARE ONLY FOR USING THE CR-10S DUAL BOARD WITH THE ENDER 5
 // DO NOT UNCOMMENT THE ABOVE #define ENDER5 LINE IF USING THE DUAL BOARD
@@ -441,6 +459,26 @@
 // If you are using a 2nd EZOut V2 (connects to Y+ connector) filament sensor kit please follow the install guide
 // and then uncomment the #define EZOUTV2_DUAL_ENABLE line below. Do NOT ever connect our filament sensor without the supplied adapter board.
 //#define EZOUTV2_DUAL_ENABLE
+
+//===========================================================================
+// Creality Ender 5 PLUS Options - Select 'Arduino Mega 2560' from Tools > Board
+//===========================================================================
+//#define ENDER5_PLUS
+
+// What LCD are you using? (Only 12864 LCD is supported)
+//#define RR_LCD_UPGRADE
+// Stock Touch LCD is not supported at this time.
+// Info on converting the LCD can be found here: https://www.th3dstudio.com/product/ender-5-plus-12864-lcd-upgrade-kit/
+
+// EZABL/ABL Probe Mounts - Uses some CR-10/Ender 3 Mounts
+//#define CR10_OEM
+//#define CUSTOM_PROBE
+
+// Ender 5 Plus ONLY ABL Settings -------------------------------------------
+// By default the Ender 5 Plus comes with a BL Touch. Enabling the ENDER5_PLUS_EZABL or ENDER5_PLUS_NOABL will override the BL Touch setting
+// If you are using the stock BL Touch with a non-stock mount enable the CUSTOM_PROBE line above and enter the offsets below for the new mount.
+//#define ENDER5_PLUS_EZABL
+//#define ENDER5_PLUS_NOABL
 
 //===========================================================================
 // ***************************   CTC PRINTERS    ***************************
@@ -805,12 +843,9 @@
 // Default is 3 which gives you 3x3 grid for a total of 9 points. STICK WITH ODD NUMBERS
 #define EZABL_POINTS 3
 
-// If you want to probe in on the bed more than 15mm change this below. 
-// Do not use 30mm for the Standard CR-10/s or the S4 as you will be on the bed screws.
-// Try 50mm to avoid the binder clips if you use them. Do NOT go under 15mm here.
-// You can do down to 10mm on the Wanhao i3 since it cannot print on the entire bed.
-// You can do down to 5mm on the Wanhao i3 Mini since it cannot print on the entire bed.
-// (only used if EZABL enabled)
+// If you want to change how far in or out the probe senses change EZABL_PROBE_EDGE value below
+// Most Machines - 35
+// Binder Clips? - 50
 #define EZABL_PROBE_EDGE 35
 
 // If you have issues with your machine running the faster probe setting disable the #define EZABL_FASTPROBE below.
@@ -882,6 +917,13 @@
 //#define REVERSE_E_MOTOR_DIRECTION
 #define CUSTOM_ESTEPS_VALUE 463
 
+// FILAMENT SENSOR UNLOAD SETTINGS -----------------
+// If you have a filament sensor that is physically mounted to the machine you can enable MOUNTED_FILAMENT_SENSOR to set the unload length to 0 to prevent filament from backing up in the sensor by uncommenting MOUNTED_FILAMENT_SENSOR 
+//#define MOUNTED_FILAMENT_SENSOR
+
+// If you have a direct drive machine with a filament sensor uncomment DIRECT_DRIVE_PRINTER to decrease the unload length from 100mm to 20mm
+//#define DIRECT_DRIVE_PRINTER
+
 // DUAL HOTEND SETTINGS ----------------------------
 
 // This is the distance between each nozzle tip when using a dual hotend like the TH3D Tough Dual Hotend or the E3D Chimera or Dual hotends.
@@ -890,7 +932,7 @@
 
 // HOTEND THERMISTOR SETTINGS ----------------------
 
-// If you are using an E3D V6 Hotend with their cartridge thermistor (not glass version) uncomment the below line.
+// If you are using an E3D V6 Hotend (or Hemera) with their cartridge thermistor (not glass version) uncomment the below line.
 //#define V6_HOTEND
 
 // If you are using a Tough Hotend from TH3D or any thermistors TH3D sells for your hotend uncomment the below line.
@@ -899,6 +941,11 @@
 // If you are using a known hotend thermistor value uncomment the below 2 lines and enter the thermistor number replacing the X after the #define KNOWN_HOTEND_THERMISTOR_VALUE
 //#define KNOWN_HOTEND_THERMISTOR
 //#define KNOWN_HOTEND_THERMISTOR_VALUE X
+
+// If you have a hotend and thermistor capable of over 290C you can set the max temp value below.
+// Setting this higher than 290C on a stock or traditional thermistor will damage it. Refer to your thermistor documentation to see what max temp is.
+//#define HIGH_TEMP_THERMISTOR
+#define HIGH_TEMP_THERMISTOR_TEMP 350
 
 // BED THERMISTOR SETTINGS -------------------------
 
@@ -1031,6 +1078,6 @@
 #include "Configuration_beta.h"
 #include "Configuration_backend.h"
 
-#define UNIFIED_VERSION "TH3D U1.R2.20"
+#define UNIFIED_VERSION "TH3D U1.R2.A3"
 
 #endif // CONFIGURATION_H
