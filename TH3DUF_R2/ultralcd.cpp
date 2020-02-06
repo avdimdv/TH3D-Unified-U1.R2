@@ -3714,101 +3714,107 @@ void lcd_quick_feedback(const bool clear_buttons) {
       #endif // E_STEPPERS > 2
     #endif
 
-    // M203 / M205 Velocity options
-    void lcd_control_motion_velocity_menu() {
-      START_MENU();
-      MENU_BACK(MSG_MOTION);
+    #if DISABLED(DISABLE_MENU_ACCELERATION)
+      // M203 / M205 Velocity options
+      void lcd_control_motion_velocity_menu() {
+        START_MENU();
+        MENU_BACK(MSG_MOTION);
 
-      // M203 Max Feedrate
-      MENU_MULTIPLIER_ITEM_EDIT(float3, MSG_VMAX MSG_A, &planner.max_feedrate_mm_s[A_AXIS], 1, 999);
-      MENU_MULTIPLIER_ITEM_EDIT(float3, MSG_VMAX MSG_B, &planner.max_feedrate_mm_s[B_AXIS], 1, 999);
-      MENU_MULTIPLIER_ITEM_EDIT(float3, MSG_VMAX MSG_C, &planner.max_feedrate_mm_s[C_AXIS], 1, 999);
+        // M203 Max Feedrate
+        MENU_MULTIPLIER_ITEM_EDIT(float3, MSG_VMAX MSG_A, &planner.max_feedrate_mm_s[A_AXIS], 1, 999);
+        MENU_MULTIPLIER_ITEM_EDIT(float3, MSG_VMAX MSG_B, &planner.max_feedrate_mm_s[B_AXIS], 1, 999);
+        MENU_MULTIPLIER_ITEM_EDIT(float3, MSG_VMAX MSG_C, &planner.max_feedrate_mm_s[C_AXIS], 1, 999);
 
-      #if ENABLED(DISTINCT_E_FACTORS)
-        MENU_MULTIPLIER_ITEM_EDIT(float3, MSG_VMAX MSG_E, &planner.max_feedrate_mm_s[E_AXIS + active_extruder], 1, 999);
-        MENU_MULTIPLIER_ITEM_EDIT(float3, MSG_VMAX MSG_E1, &planner.max_feedrate_mm_s[E_AXIS], 1, 999);
-        MENU_MULTIPLIER_ITEM_EDIT(float3, MSG_VMAX MSG_E2, &planner.max_feedrate_mm_s[E_AXIS + 1], 1, 999);
-        #if E_STEPPERS > 2
-          MENU_MULTIPLIER_ITEM_EDIT(float3, MSG_VMAX MSG_E3, &planner.max_feedrate_mm_s[E_AXIS + 2], 1, 999);
-          #if E_STEPPERS > 3
-            MENU_MULTIPLIER_ITEM_EDIT(float3, MSG_VMAX MSG_E4, &planner.max_feedrate_mm_s[E_AXIS + 3], 1, 999);
-            #if E_STEPPERS > 4
-              MENU_MULTIPLIER_ITEM_EDIT(float3, MSG_VMAX MSG_E5, &planner.max_feedrate_mm_s[E_AXIS + 4], 1, 999);
-            #endif // E_STEPPERS > 4
-          #endif // E_STEPPERS > 3
-        #endif // E_STEPPERS > 2
-      #else
-        MENU_MULTIPLIER_ITEM_EDIT(float3, MSG_VMAX MSG_E, &planner.max_feedrate_mm_s[E_AXIS], 1, 999);
-      #endif
-
-      // M205 S Min Feedrate
-      MENU_MULTIPLIER_ITEM_EDIT(float3, MSG_VMIN, &planner.min_feedrate_mm_s, 0, 999);
-
-      // M205 T Min Travel Feedrate
-      MENU_MULTIPLIER_ITEM_EDIT(float3, MSG_VTRAV_MIN, &planner.min_travel_feedrate_mm_s, 0, 999);
-
-      END_MENU();
-    }
-
-    // M201 / M204 Accelerations
-    void lcd_control_motion_acceleration_menu() {
-      START_MENU();
-      MENU_BACK(MSG_MOTION);
-
-      // M204 P Acceleration
-      MENU_MULTIPLIER_ITEM_EDIT(float5, MSG_ACC, &planner.acceleration, 10, 99000);
-
-      // M204 R Retract Acceleration
-      MENU_MULTIPLIER_ITEM_EDIT(float5, MSG_A_RETRACT, &planner.retract_acceleration, 100, 99000);
-
-      // M204 T Travel Acceleration
-      MENU_MULTIPLIER_ITEM_EDIT(float5, MSG_A_TRAVEL, &planner.travel_acceleration, 100, 99000);
-
-      // M201 settings
-      MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(long5, MSG_AMAX MSG_A, &planner.max_acceleration_mm_per_s2[A_AXIS], 100, 99000, _reset_acceleration_rates);
-      MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(long5, MSG_AMAX MSG_B, &planner.max_acceleration_mm_per_s2[B_AXIS], 100, 99000, _reset_acceleration_rates);
-      MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(long5, MSG_AMAX MSG_C, &planner.max_acceleration_mm_per_s2[C_AXIS], 10, 99000, _reset_acceleration_rates);
-
-      #if ENABLED(DISTINCT_E_FACTORS)
-        MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(long5, MSG_AMAX MSG_E, &planner.max_acceleration_mm_per_s2[E_AXIS + active_extruder], 100, 99000, _reset_acceleration_rates);
-        MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(long5, MSG_AMAX MSG_E1, &planner.max_acceleration_mm_per_s2[E_AXIS], 100, 99000, _reset_e0_acceleration_rate);
-        MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(long5, MSG_AMAX MSG_E2, &planner.max_acceleration_mm_per_s2[E_AXIS + 1], 100, 99000, _reset_e1_acceleration_rate);
-        #if E_STEPPERS > 2
-          MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(long5, MSG_AMAX MSG_E3, &planner.max_acceleration_mm_per_s2[E_AXIS + 2], 100, 99000, _reset_e2_acceleration_rate);
-          #if E_STEPPERS > 3
-            MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(long5, MSG_AMAX MSG_E4, &planner.max_acceleration_mm_per_s2[E_AXIS + 3], 100, 99000, _reset_e3_acceleration_rate);
-            #if E_STEPPERS > 4
-              MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(long5, MSG_AMAX MSG_E5, &planner.max_acceleration_mm_per_s2[E_AXIS + 4], 100, 99000, _reset_e4_acceleration_rate);
-            #endif // E_STEPPERS > 4
-          #endif // E_STEPPERS > 3
-        #endif // E_STEPPERS > 2
-      #else
-        MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(long5, MSG_AMAX MSG_E, &planner.max_acceleration_mm_per_s2[E_AXIS], 100, 99000, _reset_acceleration_rates);
-      #endif
-
-      END_MENU();
-    }
-
-    // M205 Jerk
-    void lcd_control_motion_jerk_menu() {
-      START_MENU();
-      MENU_BACK(MSG_MOTION);
-
-      #if ENABLED(JUNCTION_DEVIATION)
-        MENU_ITEM_EDIT_CALLBACK(float43, MSG_JUNCTION_DEVIATION, &planner.junction_deviation_mm, 0.01f, 0.3f, planner.recalculate_max_e_jerk);
-      #else
-        MENU_MULTIPLIER_ITEM_EDIT(float3, MSG_VA_JERK, &planner.max_jerk[A_AXIS], 1, 990);
-        MENU_MULTIPLIER_ITEM_EDIT(float3, MSG_VB_JERK, &planner.max_jerk[B_AXIS], 1, 990);
-        #if ENABLED(DELTA)
-          MENU_MULTIPLIER_ITEM_EDIT(float3, MSG_VC_JERK, &planner.max_jerk[C_AXIS], 1, 990);
+        #if ENABLED(DISTINCT_E_FACTORS)
+          MENU_MULTIPLIER_ITEM_EDIT(float3, MSG_VMAX MSG_E, &planner.max_feedrate_mm_s[E_AXIS + active_extruder], 1, 999);
+          MENU_MULTIPLIER_ITEM_EDIT(float3, MSG_VMAX MSG_E1, &planner.max_feedrate_mm_s[E_AXIS], 1, 999);
+          MENU_MULTIPLIER_ITEM_EDIT(float3, MSG_VMAX MSG_E2, &planner.max_feedrate_mm_s[E_AXIS + 1], 1, 999);
+          #if E_STEPPERS > 2
+            MENU_MULTIPLIER_ITEM_EDIT(float3, MSG_VMAX MSG_E3, &planner.max_feedrate_mm_s[E_AXIS + 2], 1, 999);
+            #if E_STEPPERS > 3
+              MENU_MULTIPLIER_ITEM_EDIT(float3, MSG_VMAX MSG_E4, &planner.max_feedrate_mm_s[E_AXIS + 3], 1, 999);
+              #if E_STEPPERS > 4
+                MENU_MULTIPLIER_ITEM_EDIT(float3, MSG_VMAX MSG_E5, &planner.max_feedrate_mm_s[E_AXIS + 4], 1, 999);
+              #endif // E_STEPPERS > 4
+            #endif // E_STEPPERS > 3
+          #endif // E_STEPPERS > 2
         #else
-          MENU_MULTIPLIER_ITEM_EDIT(float52sign, MSG_VC_JERK, &planner.max_jerk[C_AXIS], 0.1f, 990);
+          MENU_MULTIPLIER_ITEM_EDIT(float3, MSG_VMAX MSG_E, &planner.max_feedrate_mm_s[E_AXIS], 1, 999);
         #endif
-        MENU_MULTIPLIER_ITEM_EDIT(float3, MSG_VE_JERK, &planner.max_jerk[E_AXIS], 1, 990);
-      #endif
 
-      END_MENU();
-    }
+        // M205 S Min Feedrate
+        MENU_MULTIPLIER_ITEM_EDIT(float3, MSG_VMIN, &planner.min_feedrate_mm_s, 0, 999);
+
+        // M205 T Min Travel Feedrate
+        MENU_MULTIPLIER_ITEM_EDIT(float3, MSG_VTRAV_MIN, &planner.min_travel_feedrate_mm_s, 0, 999);
+
+        END_MENU();
+      }
+    #endif  // !DISABLE_MENU_VELOCITY
+
+    #if DISABLED(DISABLE_MENU_ACCELERATION)
+      // M201 / M204 Accelerations
+      void lcd_control_motion_acceleration_menu() {
+        START_MENU();
+        MENU_BACK(MSG_MOTION);
+
+        // M204 P Acceleration
+        MENU_MULTIPLIER_ITEM_EDIT(float5, MSG_ACC, &planner.acceleration, 10, 99000);
+
+        // M204 R Retract Acceleration
+        MENU_MULTIPLIER_ITEM_EDIT(float5, MSG_A_RETRACT, &planner.retract_acceleration, 100, 99000);
+
+        // M204 T Travel Acceleration
+        MENU_MULTIPLIER_ITEM_EDIT(float5, MSG_A_TRAVEL, &planner.travel_acceleration, 100, 99000);
+
+        // M201 settings
+        MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(long5, MSG_AMAX MSG_A, &planner.max_acceleration_mm_per_s2[A_AXIS], 100, 99000, _reset_acceleration_rates);
+        MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(long5, MSG_AMAX MSG_B, &planner.max_acceleration_mm_per_s2[B_AXIS], 100, 99000, _reset_acceleration_rates);
+        MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(long5, MSG_AMAX MSG_C, &planner.max_acceleration_mm_per_s2[C_AXIS], 10, 99000, _reset_acceleration_rates);
+
+        #if ENABLED(DISTINCT_E_FACTORS)
+          MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(long5, MSG_AMAX MSG_E, &planner.max_acceleration_mm_per_s2[E_AXIS + active_extruder], 100, 99000, _reset_acceleration_rates);
+          MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(long5, MSG_AMAX MSG_E1, &planner.max_acceleration_mm_per_s2[E_AXIS], 100, 99000, _reset_e0_acceleration_rate);
+          MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(long5, MSG_AMAX MSG_E2, &planner.max_acceleration_mm_per_s2[E_AXIS + 1], 100, 99000, _reset_e1_acceleration_rate);
+          #if E_STEPPERS > 2
+            MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(long5, MSG_AMAX MSG_E3, &planner.max_acceleration_mm_per_s2[E_AXIS + 2], 100, 99000, _reset_e2_acceleration_rate);
+            #if E_STEPPERS > 3
+              MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(long5, MSG_AMAX MSG_E4, &planner.max_acceleration_mm_per_s2[E_AXIS + 3], 100, 99000, _reset_e3_acceleration_rate);
+              #if E_STEPPERS > 4
+                MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(long5, MSG_AMAX MSG_E5, &planner.max_acceleration_mm_per_s2[E_AXIS + 4], 100, 99000, _reset_e4_acceleration_rate);
+              #endif // E_STEPPERS > 4
+            #endif // E_STEPPERS > 3
+          #endif // E_STEPPERS > 2
+        #else
+          MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(long5, MSG_AMAX MSG_E, &planner.max_acceleration_mm_per_s2[E_AXIS], 100, 99000, _reset_acceleration_rates);
+        #endif
+
+        END_MENU();
+      }
+    #endif  // !DISABLE_MENU_ACCELERATION
+
+    #if DISABLED(DISABLE_MENU_JERK)
+      // M205 Jerk
+      void lcd_control_motion_jerk_menu() {
+        START_MENU();
+        MENU_BACK(MSG_MOTION);
+
+        #if ENABLED(JUNCTION_DEVIATION)
+          MENU_ITEM_EDIT_CALLBACK(float43, MSG_JUNCTION_DEVIATION, &planner.junction_deviation_mm, 0.01f, 0.3f, planner.recalculate_max_e_jerk);
+        #else
+          MENU_MULTIPLIER_ITEM_EDIT(float3, MSG_VA_JERK, &planner.max_jerk[A_AXIS], 1, 990);
+          MENU_MULTIPLIER_ITEM_EDIT(float3, MSG_VB_JERK, &planner.max_jerk[B_AXIS], 1, 990);
+          #if ENABLED(DELTA)
+            MENU_MULTIPLIER_ITEM_EDIT(float3, MSG_VC_JERK, &planner.max_jerk[C_AXIS], 1, 990);
+          #else
+            MENU_MULTIPLIER_ITEM_EDIT(float52sign, MSG_VC_JERK, &planner.max_jerk[C_AXIS], 0.1f, 990);
+          #endif
+          MENU_MULTIPLIER_ITEM_EDIT(float3, MSG_VE_JERK, &planner.max_jerk[E_AXIS], 1, 990);
+        #endif
+
+        END_MENU();
+      }
+    #endif  // !DISABLE_MENU_JERK
 
     // M92 Steps-per-mm
     void lcd_control_motion_steps_per_mm_menu() {
@@ -3855,16 +3861,22 @@ void lcd_quick_feedback(const bool clear_buttons) {
       MENU_ITEM_EDIT(float52, MSG_ZPROBE_ZOFFSET, &zprobe_zoffset, Z_PROBE_OFFSET_RANGE_MIN, Z_PROBE_OFFSET_RANGE_MAX);
     #endif
 
-    #if DISABLED(SLIM_LCD_MENUS)
+    #if DISABLED(SLIM_LCD_MENUS) 
 
-      // M203 / M205 - Feedrate items
-      MENU_ITEM(submenu, MSG_VELOCITY, lcd_control_motion_velocity_menu);
+      #if DISABLED(DISABLE_MENU_VELOCITY)
+        // M203 / M205 - Feedrate items
+        MENU_ITEM(submenu, MSG_VELOCITY, lcd_control_motion_velocity_menu);
+      #endif
 
-      // M201 - Acceleration items
-      MENU_ITEM(submenu, MSG_ACCELERATION, lcd_control_motion_acceleration_menu);
+      #if DISABLED(DISABLE_MENU_ACCELERATION)
+        // M201 - Acceleration items
+        MENU_ITEM(submenu, MSG_ACCELERATION, lcd_control_motion_acceleration_menu);
+      #endif
 
-      // M205 - Max Jerk
-      MENU_ITEM(submenu, MSG_JERK, lcd_control_motion_jerk_menu);
+      #if DISABLED(DISABLE_MENU_JERK)
+        // M205 - Max Jerk
+        MENU_ITEM(submenu, MSG_JERK, lcd_control_motion_jerk_menu);
+      #endif
 
       // M92 - Steps Per mm
       MENU_ITEM(submenu, MSG_STEPS_PER_MM, lcd_control_motion_steps_per_mm_menu);
