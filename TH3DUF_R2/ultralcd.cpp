@@ -3707,7 +3707,7 @@ void lcd_quick_feedback(const bool clear_buttons) {
       #endif // E_STEPPERS > 2
     #endif
 
-    #if DISABLED(DISABLE_MENU_ACCELERATION)
+    #if DISABLED(DISABLE_MENU_VELOCITY)
       // M203 / M205 Velocity options
       void lcd_control_motion_velocity_menu() {
         START_MENU();
