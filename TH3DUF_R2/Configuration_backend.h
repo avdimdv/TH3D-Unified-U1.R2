@@ -38,7 +38,10 @@
   #endif
 #endif
 
-#if ENABLED(ENDER5_NEW_LEADSCREW)
+#if ENABLED(MY_ENDER5)
+  // Lead screw 2mm lead  
+  #define CREALITY_Z_STEPS 1600   
+#elif ENABLED(ENDER5_NEW_LEADSCREW)
   #define CREALITY_Z_STEPS 800
 #else
   #define CREALITY_Z_STEPS 400
@@ -2160,7 +2163,11 @@
     #define Z_MAX_POS 250
   #endif
   
-  #if ENABLED(ENDER5)
+  #if ENABLED(MY_ENDER5)
+    #define X_BED_SIZE 250
+    #define Y_BED_SIZE 225
+    #define Z_MAX_POS 305
+  #elif ENABLED(ENDER5)
     #define X_BED_SIZE 220
     #define Y_BED_SIZE 220
     #define Z_MAX_POS 300
@@ -2927,7 +2934,10 @@
 #define ENDSTOP_NOISE_FILTER_SAMPLING 2
 
 #if ENABLED(SLIM_1284P)
-  #define SLIM_LCD_MENUS
+  //#define SLIM_LCD_MENUS
+  #define DISABLE_MENU_VELOCITY
+  #define DISABLE_MENU_ACCELERATION
+  #define DISABLE_MENU_JERK
   #if ENABLED(LINEAR_ADVANCE)
     #define DISABLE_BOOT
   #elif ENABLED(EZABL_ENABLE)
@@ -3082,6 +3092,15 @@
     #define DEFAULT_Kp 31.89
     #define DEFAULT_Ki 4.99
     #define DEFAULT_Kd 50.94
+  #elif ENABLED(MY_ENDER5)
+    // My Creality Ender-5 at 245
+    #define DEFAULT_Kp 24.23
+    #define DEFAULT_Ki 2.10
+    #define DEFAULT_Kd 69.96
+  #elif ENABLED(CR10) || ENABLED(CR10_MINI) || ENABLED(CR10_S4) || ENABLED(CR10_S5) || ENABLED(ENDER3) || ENABLED(ENDER5)
+    #define DEFAULT_Kp 21.50
+    #define DEFAULT_Ki 1.70
+    #define DEFAULT_Kd 67.82
   #else  
     #define  DEFAULT_Kp 22.2
     #define  DEFAULT_Ki 1.08

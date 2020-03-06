@@ -417,7 +417,7 @@
 //===========================================================================
 // Creality Ender 5 Options - Select 'Sanguino 1284p' from Tools > Board
 //===========================================================================
-//#define ENDER5
+#define ENDER5
 
 // If you are using our EZOut V1/V2 (connected to LCD header) filament sensor kit please follow the install guide
 // and then uncomment the #define EZOUT_ENABLE line below.
@@ -432,13 +432,17 @@
 //#define TM3DAERO
 //#define TM3DAERO_EXTENDED
 //#define PETSFANG  //This is the RIGHT mounted version - if using the left mount please use the CUSTOM_PROBE option.
-//#define CUSTOM_PROBE
+#define CUSTOM_PROBE
 
 // Use Ender Bootscreeen instead of TH3D
 //#define ENDER_BOOT
 
 // If you have the new Ender 5 or Ender 5 Pro Model that has the new 800steps/mm Z leadscrew uncomment the below option to set the correct steps/mm
 //#define ENDER5_NEW_LEADSCREW
+
+// My custom settings
+#define MY_ENDER5
+
 //=================================================================================================
 // README - THE BELOW SETTINGS ARE ONLY FOR USING THE CR-10S DUAL BOARD WITH THE ENDER 5
 // DO NOT UNCOMMENT THE ABOVE #define ENDER5 LINE IF USING THE DUAL BOARD
@@ -906,8 +910,8 @@
   *      O-- FRONT --+
   *    (0,0)
   */
-  #define X_PROBE_OFFSET_FROM_EXTRUDER 10  // X offset: -left  +right  [of the nozzle]
-  #define Y_PROBE_OFFSET_FROM_EXTRUDER 10  // Y offset: -front +behind [the nozzle]
+  #define X_PROBE_OFFSET_FROM_EXTRUDER -43  // X offset: -left  +right  [of the nozzle]
+  #define Y_PROBE_OFFSET_FROM_EXTRUDER -6   // Y offset: -front +behind [the nozzle]
 #endif
 
 //===========================================================================
@@ -1000,7 +1004,7 @@
 //#define SLOWER_HOMING
 
 // Using a Creality Silent Board? Enable the below option to set the correct driver setting for those boards
-//#define TMC_CREALITY_BOARD
+#define TMC_CREALITY_BOARD
 
 // BOOT SCREEN OPTIONS -----------------------------
 
@@ -1026,7 +1030,7 @@
 // LINEAR ADVANCE ----------------------------------
 // See here on how to use Linear Advance: http://marlinfw.org/docs/features/lin_advance.html
 // NOTE: Linear Advance does NOT work with the Creality Silent boards, CR-10S Pro, CR-10S Max, and CR-10 V2 due to poor driver implementation.
-#define LINEAR_ADVANCE
+//#define LINEAR_ADVANCE
 // Change the K Value here or use M900 KX.XX in your starting code (recommended).
 #define LINEAR_ADVANCE_K 0
 
@@ -1035,14 +1039,14 @@
 // and then enter your probe offsets in the CUSTOM_PROBE section above. The Pin 27 boards on other ecommerce sites are clones of our original EZOut.
 // If you want to support the people that originally came up with the board you can get our EZOut breakout board here: http://EZOut.TH3DStudio.com
 // Sales from our shop allow us to allocate time for community firmware development at no charge to you. <3
-//#define BLTOUCH
+#define BLTOUCH
 
 // Here is where you set your servo pin. 
 // EZOut Servo Pin Numbers: 
 // Anet(with 2004LCD)/Ender3/5/CR-10 - 27
 // Anet(with 12864LCD)/Ender 2 - 29
 // For 2560 boards look for the pin you connected the servo wire to and enter below (typically 11).
-//#define SERVO0_PIN 27
+#define SERVO0_PIN 27
 
 // The BL Touch is NOT supported on the Wanhao i3 Plus, use the ADVi3++ Firmware instead if you want to use a BL Touch.
 
